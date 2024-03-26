@@ -25,9 +25,22 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useState } from 'react'
+import LoginSignupModal from './LoginSignupModal'
+
 export default function Header() {
+  const [modalOpen, setModalOpen] = useState<'login' | 'signup' | null>(null)
+  function setOpenModal(value: 'login' | 'signup' | null) {
+    setModalOpen(value)
+  }
+
+  function closeModal() {
+    setModalOpen(null)
+  }
+
   return (
     <header className="py-4 border-b ">
+      <LoginSignupModal modalOpen={modalOpen} closeModal={closeModal} />
       <div className=" mx-3 flex justify-between items-center ">
         <div className="flex justify-center items-center text-[#9C6644] font-bold lg:text-3xl md:text-2xl text-xl">
           <span className="text-3xl  font-mono">re</span>
@@ -37,14 +50,18 @@ export default function Header() {
           <div className=" content-center font-bold text-center  mr-5 ">
             Upload your book
           </div>
-          <Dropdown />
+          <Dropdown setOpenModal={setOpenModal} />
         </div>
       </div>
     </header>
   )
 }
 
-export function Dropdown() {
+export function Dropdown({
+  setOpenModal,
+}: {
+  setOpenModal: (value: 'login' | 'signup' | null) => void
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -56,11 +73,11 @@ export function Dropdown() {
       <DropdownMenuContent className="w-56 mx-6">
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenModal('signup')}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Sign up</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenModal('login')}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log in</span>
           </DropdownMenuItem>
