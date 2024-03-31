@@ -155,8 +155,8 @@ export default function Home() {
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
-        {data.map((card) => (
-          <SingleCard data={card} />
+        {data.map((card,index) => (
+          <SingleCard data={card} key={index}/>
         ))}
       </div>
     </div>

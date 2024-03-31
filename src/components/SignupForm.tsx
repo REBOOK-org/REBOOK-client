@@ -11,21 +11,24 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useAddUserMutation } from '@/app/service/user'
 
 const signupFormSchema = z.object({
+  name: z.string().max(20, { message: 'name must be at most 20 characters.' }),
   email: z
     .string()
-    .max(120, { message: 'name must be at most 120 characters.' })
-    .email(),
+    .max(120, { message: 'email must be at most 50 characters.' }),
   password: z
     .string()
     .min(8, { message: 'password must be at least 8 characters.' }),
   confirmPassword: z.string(),
 })
 export default function SignupForm({ closeModal }: { closeModal: () => void }) {
+  const [addUser, { data, error, isLoading }] = useAddUserMutation()
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -33,7 +36,6 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
   })
 
   async function onSubmit(data: z.infer<typeof signupFormSchema>) {
-    // TODO: implement login
     if (data.password !== data.confirmPassword) {
       form.setError('confirmPassword', {
         type: 'manual',
@@ -42,6 +44,8 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
       return
     }
     console.log(data)
+    const user = addUser(data)
+    console.log(user)
     closeModal()
   }
   return (
@@ -50,6 +54,21 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="font-mono p-4 flex flex-col gap-5 h-full justify-center items-center m-auto shadow-md my-4 rounded-md border-green-200 border"
       >
+        <div className="w-full">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input id="name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="w-full">
           <FormField
             control={form.control}
