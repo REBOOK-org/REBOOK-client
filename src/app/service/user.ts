@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL
-console.log(baseUrl)
 
 export const userApi = createApi({
   reducerPath: 'userApi',

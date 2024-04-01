@@ -1,6 +1,6 @@
 import { Menu, UserRound } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
+import { useAuth } from '@/contexts/authContext'
 import {
   Cloud,
   LifeBuoy,
@@ -33,6 +33,12 @@ export default function Dropdown({
 }: {
   setOpenModal: (value: 'login' | 'signup' | null) => void
 }) {
+  const auth = useAuth()
+
+  function handleLogout() {
+    auth.logout()
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -44,60 +50,69 @@ export default function Dropdown({
       <DropdownMenuContent className="w-56 mx-6">
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => setOpenModal('signup')}>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Sign up</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpenModal('login')}>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log in</span>
-          </DropdownMenuItem>
+          {!auth.isAuth && (
+            <>
+              <DropdownMenuItem onClick={() => setOpenModal('login')}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log in</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpenModal('signup')}>
+                <LogOut className="mr-2 h-4 w-4" />
+
+                <span>Sign up</span>
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <Link to="/account">
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>My Account</span>
-            </DropdownMenuItem>
-          </Link>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <UserPlus className="mr-2 h-4 w-4" />
-              <span>Invite users</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
+        {auth.isAuth && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <Link to="/account">
                 <DropdownMenuItem>
-                  <Mail className="mr-2 h-4 w-4" />
-                  <span>Email</span>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>My Account</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  <span>Message</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  <span>More...</span>
-                </DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            <Plus className="mr-2 h-4 w-4" />
-            <span>New Book</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+              </Link>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  <span>Invite users</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem>
+                      <Mail className="mr-2 h-4 w-4" />
+                      <span>Email</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      <span>Message</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      <span>More...</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+              <DropdownMenuItem>
+                <Plus className="mr-2 h-4 w-4" />
+                <span>New Book</span>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <LifeBuoy className="mr-2 h-4 w-4" />
@@ -107,6 +122,16 @@ export default function Dropdown({
           <Cloud className="mr-2 h-4 w-4" />
           <span>Auth</span>
         </DropdownMenuItem>
+        {auth.isAuth && (
+          <DropdownMenuItem
+            onClick={() => {
+              handleLogout()
+            }}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )

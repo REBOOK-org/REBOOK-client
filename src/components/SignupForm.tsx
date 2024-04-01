@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useAddUserMutation } from '@/app/service/user'
-import { log } from 'console'
+import { useAuth } from '@/contexts/authContext'
 
 const signupFormSchema = z.object({
   name: z.string().max(20, { message: 'name must be at most 20 characters.' }),
@@ -25,7 +25,12 @@ const signupFormSchema = z.object({
   confirmPassword: z.string(),
 })
 export default function SignupForm({ closeModal }: { closeModal: () => void }) {
+  const auth = useAuth()
   const [addUser, { data, error, isLoading }] = useAddUserMutation()
+
+  if (data) {
+    auth.login(data.data, data.tokens.access)
+  }
 
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
@@ -45,16 +50,12 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
       })
       return
     }
-    console.log(data)
-    const d = {
-      email: 'sarraree5@gmail.com',
-      name: 'Sarah Hassan',
-      password: '111998srsr',
-    }
-    const userr = addUser(d)
-    console.log(userr)
-    console.log(data)
 
+    try {
+      await addUser(user)
+    } catch (err) {
+      console.log(err)
+    }
     closeModal()
   }
   return (

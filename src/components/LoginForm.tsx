@@ -11,7 +11,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useLoginUserMutation, userApi } from '@/app/service/user'
+import { useLoginUserMutation } from '@/app/service/user'
+import { useAuth } from '@/contexts/authContext'
 
 const loginFormSchema = z.object({
   email: z
@@ -24,7 +25,13 @@ const loginFormSchema = z.object({
 })
 export default function LoginForm({ closeModal }: { closeModal: () => void }) {
   const [loginUser, { data, error, isLoading }] = useLoginUserMutation()
-  console.log(data)
+  const auth = useAuth()
+
+  if (data) {
+    console.log(data)
+    const { id, email, name } = data
+    auth.login({ id, email, name }, data.access)
+  }
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -36,8 +43,6 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
     try {
       const { data } = await loginUser(user)
       console.log('Login successful!', data['access'])
-
-      closeModal()
     } catch (err) {
       console.error('Login failed:', error)
     }
