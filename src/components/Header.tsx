@@ -5,9 +5,13 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import LoginSignupModal from './LoginSignupModal'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '@/components/ui/use-toast'
+import { useAuth } from '@/contexts/authContext'
 
 export default function Header() {
   const navigate = useNavigate()
+  const { toast } = useToast()
+  const auth = useAuth()
 
   const [modalOpen, setModalOpen] = useState<'login' | 'signup' | null>(null)
   function setOpenModal(value: 'login' | 'signup' | null) {
@@ -16,6 +20,16 @@ export default function Header() {
 
   function closeModal() {
     setModalOpen(null)
+  }
+  function handelUploadBook() {
+    if (!auth.isAuth) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh Ohhh! Please login first to share your book.',
+      })
+    } else {
+      navigate('/book-upload')
+    }
   }
 
   return (
@@ -29,8 +43,13 @@ export default function Header() {
           </div>
         </Link>
         <div className="flex items-center">
-          <div className=" content-center font-bold text-center  mr-5 ">
-            <Link to="/book-upload">Upload your book</Link>
+          <div
+            className=" content-center font-bold text-center  mr-5 "
+            onClick={() => {
+              handelUploadBook()
+            }}
+          >
+            <Link>Upload your book</Link>
           </div>
           <Dropdown setOpenModal={setOpenModal} />
         </div>
