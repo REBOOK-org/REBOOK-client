@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useLoginUserMutation, userApi } from '@/app/service/user'
 
 const loginFormSchema = z.object({
   email: z
@@ -22,6 +23,8 @@ const loginFormSchema = z.object({
     .min(8, { message: 'password must be at least 8 characters.' }),
 })
 export default function LoginForm({ closeModal }: { closeModal: () => void }) {
+  const [loginUser, { data, error, isLoading }] = useLoginUserMutation()
+  console.log(data)
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -29,10 +32,16 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
       password: '',
     },
   })
+  async function onSubmit(user: z.infer<typeof loginFormSchema>) {
+    try {
+      const { data } = await loginUser(user)
+      console.log('Login successful!', data['access'])
 
-  async function onSubmit(data: z.infer<typeof loginFormSchema>) {
-    // TODO: implement login
-    console.log(data)
+      closeModal()
+    } catch (err) {
+      console.error('Login failed:', error)
+    }
+
     closeModal()
   }
   return (

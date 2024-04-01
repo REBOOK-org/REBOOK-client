@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useAddUserMutation } from '@/app/service/user'
+import { log } from 'console'
 
 const signupFormSchema = z.object({
   name: z.string().max(20, { message: 'name must be at most 20 characters.' }),
@@ -25,6 +26,7 @@ const signupFormSchema = z.object({
 })
 export default function SignupForm({ closeModal }: { closeModal: () => void }) {
   const [addUser, { data, error, isLoading }] = useAddUserMutation()
+
   const form = useForm<z.infer<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -35,8 +37,8 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
     },
   })
 
-  async function onSubmit(data: z.infer<typeof signupFormSchema>) {
-    if (data.password !== data.confirmPassword) {
+  async function onSubmit(user: z.infer<typeof signupFormSchema>) {
+    if (user.password !== user.confirmPassword) {
       form.setError('confirmPassword', {
         type: 'manual',
         message: 'password and confirm password must be the same.',
@@ -44,8 +46,15 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
       return
     }
     console.log(data)
-    const user = addUser(data)
-    console.log(user)
+    const d = {
+      email: 'sarraree5@gmail.com',
+      name: 'Sarah Hassan',
+      password: '111998srsr',
+    }
+    const userr = addUser(d)
+    console.log(userr)
+    console.log(data)
+
     closeModal()
   }
   return (
