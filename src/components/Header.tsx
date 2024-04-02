@@ -33,7 +33,7 @@ export default function Header() {
   }
 
   return (
-    <header className="py-4 border-b fixed top-0 left-0 w-full bg-white shadow-md z-50 ">
+    <header className="py-2 border-b fixed top-0 mb-3 left-0 w-full bg-white shadow-md z-50 ">
       <LoginSignupModal modalOpen={modalOpen} closeModal={closeModal} />
       <div className=" mx-3 flex justify-between items-center ">
         <Link to={'/'}>

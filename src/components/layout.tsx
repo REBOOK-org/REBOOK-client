@@ -17,8 +17,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <>
       <div className="flex flex-col h-screen p-2">
         <Header />
-        <main className="flex-1 mt-[100px]">{children}</main>
-        <Footer />
+        <main className="flex-1 mt-[80px]">{children}</main>
+        {/* <Footer /> */}
       </div>
     </>
   )
