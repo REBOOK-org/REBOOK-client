@@ -11,15 +11,17 @@ export default function BasicInfo() {
       <div className="flex w-full flex-col gap-6 pt-8">
         <Textarea
           variant="standard"
-          label="Name"
+          label="Book Name"
+          color="brown"
           className=" text-xl min-h-[50px] pt-0"
         />
         <Textarea
           variant="standard"
           label="Book Author"
+          color="brown"
           className=" text-xl min-h-[50px] pt-0"
         />
-        <Textarea variant="outlined" label="Book Description" />
+        <Textarea variant="outlined" color="brown" label="Book Description" />
       </div>
     </div>
   )
