@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useAddUserMutation } from '@/app/service/user'
+import { useAddUserMutation } from '@/app/apiService/userApi'
 import { useAuth } from '@/contexts/authContext'
 
 const signupFormSchema = z.object({
