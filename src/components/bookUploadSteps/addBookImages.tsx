@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
+import { useSelector, useDispatch } from 'react-redux'
+import { uploadBook } from '@/app/features/book'
 
 const AddBookImages = () => {
-  const [uploadedFiles, setUploadedFiles] = useState([])
+  const dispatch = useDispatch()
+  const book = useSelector((state) => state.book)
+  const [uploadedFiles, setUploadedFiles] = useState(book.images)
   const [isDragging, setIsDragging] = useState(false)
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -24,7 +28,12 @@ const AddBookImages = () => {
     e.preventDefault()
     setUploadedFiles(uploadedFiles.filter((image) => image !== img))
   }
+  useEffect(() => {
+    dispatch(uploadBook({ images: uploadedFiles }))
+  },[uploadedFiles, dispatch])
 
+  console.log(uploadedFiles);
+  
   return (
     <div className="w-full lg:w-4/5 xl:w-3/5">
       <h1 className="font-sans font-bold sm:text-lg md:text-2xl block justify-self-center">
@@ -83,7 +92,7 @@ const AddBookImages = () => {
                   </button>
                 </div>
                 <img
-                  src={URL.createObjectURL(img)}
+                  src={typeof img === 'string' ? img : URL.createObjectURL(img)}
                   key={img.path}
                   className="rounded-0 mr-2 w-[100px] h-[100px]"
                   alt={img.name}

@@ -2,20 +2,23 @@ import React from 'react'
 import { Switch } from '@material-tailwind/react'
 import { useState } from 'react'
 import { Input } from '@material-tailwind/react'
+import { useSelector, useDispatch } from 'react-redux'
+import { uploadBook } from '@/app/features/book'
 
 export default function SellInfo() {
-  const [selected, setSelected] = useState(null)
-  const [price, setPrice] = React.useState('')
+  const dispatch = useDispatch()
+  const book = useSelector((state) => state.book)
 
-  const handelPrice = ({ target }) => setPrice(target.value)
 
-  const handleBookState = (card) => {
-    if (selected === card) {
-      setSelected(null)
+  const handleBookState = (condition) => {
+    if (book.condition === condition) {
+      dispatch(uploadBook({ condition: '' }))
     } else {
-      setSelected(card)
+      dispatch(uploadBook({ condition: condition }))
     }
   }
+
+  
 
   return (
     <div className=" w-full lg:w-4/5 xl:w-3/5">
@@ -27,16 +30,19 @@ export default function SellInfo() {
         <div className="flex w-full flex-col gap-3">
           <p className=" font-semibold text-xl ">How is your book?</p>
           <div className="flex justify-between">
-            {['New', 'Fine', 'Damaged'].map((card, index) => {
+            {['New', 'Fine', 'Damaged'].map((condition) => {
               return (
                 <div
-                  key={card}
-                  className={` w-20 h-14  sm:w-28 sm: h-16  md:w-40   rounded-xl  bg-brown-500 text-white flex items-center justify-center ${
-                    selected === card ? 'bg-brown-700' : ''
+                  value={condition.toLowerCase()}
+                  key={condition}
+                  className={` w-20 sm:w-28 sm:h-14  md:h-16  md:w-40   rounded-xl  bg-brown-500 text-white flex items-center justify-center ${
+                    book.condition === condition.toLowerCase()
+                      ? 'bg-brown-700'
+                      : ''
                   } cursor-pointer`}
-                  onClick={() => handleBookState(card)}
+                  onClick={() => handleBookState(condition.toLowerCase())}
                 >
-                  {card}
+                  {condition}
                 </div>
               )
             })}
@@ -50,10 +56,12 @@ export default function SellInfo() {
             size="md"
             label="Price"
             color="brown"
-            value={price}
-            onChange={handelPrice}
             type="number"
-            min="1"
+            min={0}
+            value={book.price}
+            onChange={(e) => {
+              dispatch(uploadBook({ price: parseInt(e.target.value) }))
+            }}
           />
         </div>
 
@@ -64,7 +72,15 @@ export default function SellInfo() {
               will exchange for a good offer
             </p>
           </div>
-          <Switch color="brown" defaultChecked />
+          <Switch
+            color="brown"
+            // value={book.exchangeable}
+            defaultChecked={book.exchangeable}
+            onChange={(e) => {
+              e.target.defaultChecked = !book.exchangeable
+              dispatch(uploadBook({ exchangeable: !book.exchangeable }))
+            }}
+          />
         </div>
       </div>
     </div>
