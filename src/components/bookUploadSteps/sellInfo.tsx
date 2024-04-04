@@ -30,12 +30,12 @@ export default function SellInfo() {
         <div className="flex w-full flex-col gap-3">
           <p className=" font-semibold text-xl ">How is your book?</p>
           <div className="flex justify-between">
-            {['New', 'Fine', 'Damaged'].map((condition) => {
+            {['New', 'Used', 'Damaged'].map((condition) => {
               return (
                 <div
                   value={condition.toLowerCase()}
                   key={condition}
-                  className={` w-20 sm:w-28 sm:h-14  md:h-16  md:w-40   rounded-xl  bg-brown-500 text-white flex items-center justify-center ${
+                  className={` w-20 sm:w-28 h-14  md:h-16  md:w-40   rounded-xl  bg-brown-500 text-white flex items-center justify-center ${
                     book.condition === condition.toLowerCase()
                       ? 'bg-brown-700'
                       : ''

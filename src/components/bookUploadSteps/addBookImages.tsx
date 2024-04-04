@@ -30,9 +30,8 @@ const AddBookImages = () => {
   }
   useEffect(() => {
     dispatch(uploadBook({ images: uploadedFiles }))
-  },[uploadedFiles, dispatch])
+  }, [uploadedFiles, dispatch])
 
-  console.log(uploadedFiles);
   
   return (
     <div className="w-full lg:w-4/5 xl:w-3/5">
