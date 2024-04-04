@@ -57,7 +57,7 @@ export default function FinalStep() {
 
     try {
       const token = auth.token
-
+      if (book.images)
       addBook({ book, token })
     } catch (err) {
       console.error(err)

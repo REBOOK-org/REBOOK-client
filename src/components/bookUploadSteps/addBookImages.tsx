@@ -11,12 +11,18 @@ const AddBookImages = () => {
   const [isDragging, setIsDragging] = useState(false)
 
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: (acceptedFiles) => {
-      setUploadedFiles((prevUploadedFiles) => [
-        ...prevUploadedFiles,
-        ...acceptedFiles,
-      ])
-
+    onDrop: async (acceptedFiles) => {
+      // setUploadedFiles((prevUploadedFiles) => [
+      //   ...prevUploadedFiles,
+      //   ...acceptedFiles,
+      // ])
+      const uploadPromises = acceptedFiles.map(async (img) => {
+        return cloudinaryUploader(img)
+      })
+      Promise.all(uploadPromises).then((res) => {
+        dispatch(uploadBook({ images: [...uploadedFiles, ...res] }))
+        setUploadedFiles((prevUploadedFiles) => [...prevUploadedFiles, ...res])
+      })
     },
     onDragEnter: () => {
       setIsDragging(true)
@@ -28,29 +34,28 @@ const AddBookImages = () => {
 
   const deleteImg = (e, img) => {
     e.preventDefault()
-    setUploadedFiles(uploadedFiles.filter((image) => image !== img))
+    setUploadedFiles(uploadedFiles.filter((image) => image !== img.toString()))
   }
- useEffect(() => {
-   return () => {
-     const uploadImages = async () => {
-       try {
-         const uploadPromises = uploadedFiles.map(async (img) => {
-           return await cloudinaryUploader(img)
-         })
+  // useEffect(() => {
+  //   return () => {
+  //     const uploadImages = async () => {
+  //       try {
+  //         const uploadPromises = uploadedFiles.map(async (img) => {
+  //           return await cloudinaryUploader(img)
+  //         })
 
-         const urls = await Promise.all(uploadPromises)
+  //         const urls = await Promise.all(uploadPromises)
 
-         dispatch(uploadBook({ images: urls }))
-       } catch (err) {
-         console.error(err)
-       }
-     }
+  //         dispatch(uploadBook({ images: urls }))
+  //       } catch (err) {
+  //         console.error(err)
+  //       }
+  //     }
 
-     uploadImages()
-   }
- }, [uploadedFiles, dispatch])
+  //     uploadImages()
+  //   }
+  // }, [uploadedFiles, dispatch])
 
-  
   return (
     <div className="w-full lg:w-4/5 xl:w-3/5">
       <h1 className="font-sans font-bold sm:text-lg md:text-2xl block justify-self-center">
@@ -95,6 +100,7 @@ const AddBookImages = () => {
 
         <div className="flex w-full mt-2 px-3">
           {uploadedFiles.map((img, index) => {
+            console.log(img)
             return (
               <div className="relative w-fit">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center justify-center">
