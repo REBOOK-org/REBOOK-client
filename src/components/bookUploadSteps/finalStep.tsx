@@ -64,8 +64,7 @@ export default function FinalStep() {
 
       const urls = await Promise.all(uploadPromises)
       if (urls.length === book.images.length) {
-        dispatch(uploadBook({ images: urls }))
-
+        await dispatch(uploadBook({ images: urls }))
         const token = auth.token
         addBook({ book, token })
       }
@@ -92,7 +91,10 @@ export default function FinalStep() {
         >
           SHARE
         </Button>
-        <Link to="/" className="  h-10 w-full bg-white text-brown-700 hover:bg-gray-300">
+        <Link
+          to="/"
+          className="  h-10 w-full bg-white text-brown-700 hover:bg-gray-300"
+        >
           <Button className="  h-10 w-full bg-white text-brown-700 hover:bg-gray-300">
             BACK TO HOME
           </Button>

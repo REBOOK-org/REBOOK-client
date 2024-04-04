@@ -10,7 +10,7 @@ const data = {
   name: 'The Great Gatsby',
   auther: 'F. Scott Fitzgerald',
   description:
-    'A novel st Egg sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssand East Egg on prosperous Long Island in the summer of 1922.',
+    'A novel st Egg sssssssssssssssssssssssssssssssssssand East Egg on prosperous Long Island in the summer of 1922.',
   condition: 'New',
   categories: ['Fiction', 'Classic'],
   price: 349,
@@ -20,7 +20,7 @@ const data = {
     email: 'aaa@gmail.com',
     phone: '+1234567890',
   },
-  exchangable: true,
+  exchangeable: true,
 }
 
 
@@ -28,7 +28,6 @@ export default function BookDetails() {
   const { id } = useParams()
   const { data: book, isLoading, isError } = useGetBookByIdQuery(id)
 
-  console.log(book)
   if (isLoading) return <div>Loading...</div>
 
   return (
@@ -37,8 +36,8 @@ export default function BookDetails() {
         author={book.author}
         coverImage={book.images[0]}
         title={book.name}
-        description={data.description}
-        ganra={data.categories}
+        description={book.description}
+        categories={data.categories}
         condition={book.condition}
       />
       <div className="grid grid-cols-3 gap-4 px-4">

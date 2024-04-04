@@ -7,14 +7,14 @@ export default function BookCard({
   author,
   description,
   condition,
-  ganra,
+  categories,
 }: {
   coverImage: string
   title: string
   author: string
   description: string
   condition: string
-  ganra: string[]
+  categories: string[]
 }) {
   return (
     <Card>
@@ -41,12 +41,12 @@ export default function BookCard({
           </p>
           <p className="text-sm">{description} </p>
           <div className="flex gap-2">
-            {ganra.map((ganra) => (
+            {categories.map((category) => (
               <Badge
-                key={ganra}
+                key={category}
                 className="bg-transparent text-red-400 border border-red-400 hover:bg-red-400 hover:text-white"
               >
-                {ganra}
+                {category}
               </Badge>
             ))}
           </div>
@@ -56,4 +56,5 @@ export default function BookCard({
         </div>
       </CardContent>
     </Card>
-  )}
+  )
+}
