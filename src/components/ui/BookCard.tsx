@@ -11,28 +11,31 @@ import './card.css'
 
 interface SingleCardProps {
   data: {
-    title: string
-    location: {
-      city: string
-      country: string
-    }
-    pricePerNight: number
-    date: {
-      start: string
-    }
-    images: string[]
     id: number
+    name: string
+    author: string
+    description: string
+    condition: string
+    price: string
+    exchangeable: boolean
+    images: string[]
+    category_names: string[]
+    owner: string
+    owner_name: string
+    quantity: number
+    status: string
+    type_of_sharing: string
   }
 }
 
 const SingleCard = ({ data }: SingleCardProps) => {
-  const { title, location, images } = data
+  const { name, author, images, price } = data
   return (
-    <div className="rounded-full">
-      <Card className="rounded group hover:border-blue-400 rounded-t-2xl">
+    <div className=" rounded-2xl">
+      <Card className="rounded rounded-full rounded-2xl group hover:border-blue-400 rounded-t-2xl  ">
         <Swiper
           navigation={true}
-          className=""
+          className="rounded"
           modules={[Navigation, Scrollbar, Pagination]}
           pagination={{
             dynamicBullets: true,
@@ -41,26 +44,27 @@ const SingleCard = ({ data }: SingleCardProps) => {
         >
           {images.map((imgSrc, index) => {
             return (
-              <SwiperSlide key={index}>
+              <SwiperSlide
+                key={index}
+                className=" rounded-t-lg "
+                style={{ filter: 'brightness(0.95)' }}
+              >
                 <img
                   alt={`img-${index}`}
                   src={imgSrc}
-                  className="object-cover aspect-[19/17] rounded-t-lg"
+                  className="brightness-200 object-cover aspect-[26/26]  rounded-3xl"
+                  style={{ filter: 'brightness(0.99)' }}
                 />
               </SwiperSlide>
             )
           })}
         </Swiper>
 
-        <CardContent className="p-4 grid gap-2">
-          <h3 className="font-bold text-lg group-hover:underline group-hover:text-blue-400 truncate group-hover:translate-x-2 transition-transform">
-            {title}
-          </h3>
-          <p className="text-sm text-gray-500">
-            {location?.city}, {location?.country}
-          </p>
+        <CardContent className="p-4 grid gap-0">
+          <h3 className=" text-md font-semibold ">{name}</h3>
+          <p className=" text-gray-700 text-md   font-semibold">{author}</p>
 
-          <p className="text-sm text-gray-500 truncate">{title}</p>
+          <p className="  font-semibold">{`${price} $`}</p>
         </CardContent>
       </Card>
     </div>
