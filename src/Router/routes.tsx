@@ -2,6 +2,7 @@ import { FC } from 'react'
 import Home from '@/views/Home'
 import Account from '@/views/Account'
 import BookUpload from '@/views/BookUpload'
+import BookDetails from '@/views/BookDetails'
 
 interface Route {
   path: string
@@ -24,6 +25,11 @@ const routes: Route[] = [
     path: '/book-upload',
     component: BookUpload,
     protected: true,
+  },
+  {
+    path: '/book/:id',
+    component: BookDetails,
+    protected: false,
   },
   {
     path: '*',
