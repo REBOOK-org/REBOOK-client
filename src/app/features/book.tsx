@@ -8,7 +8,6 @@ interface Book {
   price: number
   condition: string
   images: string[]
-  category: string[]
   exchangeable: boolean 
 }
 
@@ -19,7 +18,6 @@ const initialState: Book = {
   price: 0,
   condition: '',
   images: [],
-  category: [],
   exchangeable: false,
 }
 
