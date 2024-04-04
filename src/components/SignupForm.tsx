@@ -29,7 +29,7 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
   const [addUser, { data, error, isLoading }] = useAddUserMutation()
 
   if (data) {
-    auth.login(data.data, data.tokens.access)
+    auth.login(data.user, data.tokens.access)
   }
 
   const form = useForm<z.infer<typeof signupFormSchema>>({

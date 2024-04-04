@@ -29,8 +29,9 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
 
   if (data) {
     console.log(data)
-    const { id, email, name } = data
-    auth.login({ id, email, name }, data.access)
+    // const { id, email, name } = data
+    auth.login(data.user, data.tokens.access)
+    console.log('Logged in:', data.user)
   }
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -42,7 +43,6 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
   async function onSubmit(user: z.infer<typeof loginFormSchema>) {
     try {
       const { data } = await loginUser(user)
-      console.log('Login successful!', data['access'])
     } catch (err) {
       console.error('Login failed:', error)
     }
