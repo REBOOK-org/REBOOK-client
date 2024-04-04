@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useSelector, useDispatch } from 'react-redux'
 import { uploadBook } from '@/app/features/book'
+import cloudinaryUploader from '@/utils/cloudinaryApi'
 
 const AddBookImages = () => {
   const dispatch = useDispatch()
@@ -15,6 +16,7 @@ const AddBookImages = () => {
         ...prevUploadedFiles,
         ...acceptedFiles,
       ])
+
     },
     onDragEnter: () => {
       setIsDragging(true)
@@ -28,9 +30,25 @@ const AddBookImages = () => {
     e.preventDefault()
     setUploadedFiles(uploadedFiles.filter((image) => image !== img))
   }
-  useEffect(() => {
-    dispatch(uploadBook({ images: uploadedFiles }))
-  }, [uploadedFiles, dispatch])
+ useEffect(() => {
+   return () => {
+     const uploadImages = async () => {
+       try {
+         const uploadPromises = uploadedFiles.map(async (img) => {
+           return await cloudinaryUploader(img)
+         })
+
+         const urls = await Promise.all(uploadPromises)
+
+         dispatch(uploadBook({ images: urls }))
+       } catch (err) {
+         console.error(err)
+       }
+     }
+
+     uploadImages()
+   }
+ }, [uploadedFiles, dispatch])
 
   
   return (

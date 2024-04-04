@@ -42,7 +42,7 @@ export default function FinalStep() {
 
       setTimeout(() => {
         navigate('/')
-      }, 4000)
+      }, 3000)
     }
     if (error) {
       toast({
@@ -52,22 +52,13 @@ export default function FinalStep() {
     }
   }, [data, error])
 
-  const cloudName = import.meta.env.VITE_REACT_APP_CLOUDINARY_CLOUD_NAME
-
   async function handelUploadBook(e) {
     e.preventDefault()
 
     try {
-      const uploadPromises = book.images.map(async (img) => {
-        return await cloudinaryUploader(img)
-      })
+      const token = auth.token
 
-      const urls = await Promise.all(uploadPromises)
-      if (urls.length === book.images.length) {
-        await dispatch(uploadBook({ images: urls }))
-        const token = auth.token
-        addBook({ book, token })
-      }
+      addBook({ book, token })
     } catch (err) {
       console.error(err)
     }

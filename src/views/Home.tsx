@@ -1,15 +1,18 @@
-import SingleCard from '@/components/ui/BookCard'
-import img1 from '../assets/janko-ferlic-sfL_QOnmy00-unsplash.jpg'
-import img2 from '../assets/jaredd-craig-HH4WBGNyltc-unsplash.jpg'
-import img3 from '../assets/sincerely-media-CXYPfveiuis-unsplash.jpg'
-import img4 from '../assets/sincerely-media-nGrfKmtwv24-unsplash.jpg'
-import { useGetAllBooksQuery } from '@/app/apiService/bookApi'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import SingleCard from '@/components/ui/BookCard'
+import { useGetAllBooksQuery } from '@/app/apiService/bookApi'
 
 export default function Home() {
-  const { data: booksData, isLoading, isError } = useGetAllBooksQuery()
+  const { data: booksData, isLoading, isError, refetch } = useGetAllBooksQuery()
+
+  useEffect(() => {
+    refetch()
+  }, [refetch])
 
   if (isLoading) return <div>Loading...</div>
+
+  if (isError) return <div>Error fetching books</div>
 
   return (
     <div className="container mx-auto">
