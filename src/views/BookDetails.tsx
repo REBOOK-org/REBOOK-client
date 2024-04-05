@@ -15,10 +15,10 @@ const data = {
   categories: ['Fiction', 'Classic'],
   price: 349,
   address: 'New York, USA',
-  additionalNotes: 'Invoices cy reimbursement',
+  additionalNotes: 'There is a small scratch on the cover.',
   contacts: {
-    email: 'aaa@gmail.com',
-    phone: '+1234567890',
+    email: 'user@gmail.com',
+    phone: '+201023377870',
   },
   exchangeable: true,
 }
@@ -40,7 +40,7 @@ export default function BookDetails() {
         categories={data.categories}
         condition={book.condition}
       />
-      <div className="grid grid-cols-3 gap-4 px-4">
+      <div className="grid grid-cols-3 gap-4 px-4 my-8">
         <div className="col-span-2">
           <ImageScrollbar images={book.images} />
           <ContactCard
@@ -57,5 +57,3 @@ export default function BookDetails() {
     </div>
   )
 }
-
-

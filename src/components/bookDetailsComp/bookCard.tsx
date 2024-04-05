@@ -25,7 +25,7 @@ export default function BookCard({
         <div>
           <img
             alt="Book cover"
-            className="rounded-lg object-cover aspect-[120/180]"
+            className="rounded-lg object-cover w-[400px]"
             height={180}
             src={
               coverImage ||

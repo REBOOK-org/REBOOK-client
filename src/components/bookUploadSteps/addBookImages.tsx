@@ -3,12 +3,18 @@ import { useDropzone } from 'react-dropzone'
 import { useSelector, useDispatch } from 'react-redux'
 import { uploadBook } from '@/app/features/book'
 import cloudinaryUploader from '@/utils/cloudinaryApi'
+import { set } from 'zod'
 
-const AddBookImages = () => {
+const AddBookImages = ({ isBtnDisabled, setIsBtnDisabled }) => {
   const dispatch = useDispatch()
   const book = useSelector((state) => state.book)
   const [uploadedFiles, setUploadedFiles] = useState(book.images)
   const [isDragging, setIsDragging] = useState(false)
+  const [isLoading, setIsLoading] = useState(isBtnDisabled)
+
+  useEffect(() => {
+    setIsLoading(isBtnDisabled)
+  }, [isBtnDisabled])
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: async (acceptedFiles) => {
@@ -17,11 +23,16 @@ const AddBookImages = () => {
       //   ...acceptedFiles,
       // ])
       const uploadPromises = acceptedFiles.map(async (img) => {
-        return cloudinaryUploader(img)
+        return await cloudinaryUploader(img)
       })
+
+      console.log(uploadPromises)
+      setIsBtnDisabled(true)
       Promise.all(uploadPromises).then((res) => {
+        console.log(res, 'URLOF IMAGE')
         dispatch(uploadBook({ images: [...uploadedFiles, ...res] }))
         setUploadedFiles((prevUploadedFiles) => [...prevUploadedFiles, ...res])
+        setIsBtnDisabled(false)
       })
     },
     onDragEnter: () => {
@@ -58,6 +69,8 @@ const AddBookImages = () => {
 
   return (
     <div className="w-full lg:w-4/5 xl:w-3/5">
+      {isLoading && <h1>Loading Image</h1>}
+
       <h1 className="font-sans font-bold sm:text-lg md:text-2xl block justify-self-center">
         Add some photos of your book
       </h1>
