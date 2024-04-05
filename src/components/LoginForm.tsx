@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useLoginUserMutation } from '@/app/apiService/userApi'
 import { useAuth } from '@/contexts/authContext'
+import { useState } from 'react'
 
 const loginFormSchema = z.object({
   email: z
@@ -24,9 +25,14 @@ const loginFormSchema = z.object({
     .min(8, { message: 'password must be at least 8 characters.' }),
 })
 export default function LoginForm({ closeModal }: { closeModal: () => void }) {
-  const [loginUser, { data, error, isLoading }] = useLoginUserMutation()
+  const [loginUser, { data, isLoading }] = useLoginUserMutation()
   const auth = useAuth()
+  const [loginErr, setLoginErr] = useState('')
+  // if (error) {
+  //   console.log(error)
 
+  //   setLoginErr(error)
+  // }
   if (data) {
     console.log(data)
     // const { id, email, name } = data
@@ -41,13 +47,19 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
     },
   })
   async function onSubmit(user: z.infer<typeof loginFormSchema>) {
+    setLoginErr('')
     try {
-      const { data } = await loginUser(user)
-    } catch (err) {
-      console.error('Login failed:', error)
-    }
+      const userData = await loginUser(user)
 
-    closeModal()
+      if (userData.error) {
+        setLoginErr('Invalid email or password. Please try again!')
+      } else {
+        closeModal()
+      }
+    } catch (err) {
+      console.log(err)
+      setLoginErr(err.message || 'An error occurred. Please try again.')
+    }
   }
   return (
     <Form {...form}>
@@ -85,6 +97,7 @@ export default function LoginForm({ closeModal }: { closeModal: () => void }) {
             )}
           />
         </div>
+        {loginErr && <p className="text-red-500">{loginErr}</p>}
 
         <Button
           type="submit"

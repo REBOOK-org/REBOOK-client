@@ -13,12 +13,14 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useAddUserMutation } from '@/app/apiService/userApi'
 import { useAuth } from '@/contexts/authContext'
+import { useState } from 'react'
 
 const signupFormSchema = z.object({
   name: z.string().max(20, { message: 'name must be at most 20 characters.' }),
   email: z
     .string()
-    .max(120, { message: 'email must be at most 50 characters.' }),
+    .max(120, { message: 'email must be at most 50 characters.' })
+    .email(),
   password: z
     .string()
     .min(8, { message: 'password must be at least 8 characters.' }),
@@ -27,6 +29,7 @@ const signupFormSchema = z.object({
 export default function SignupForm({ closeModal }: { closeModal: () => void }) {
   const auth = useAuth()
   const [addUser, { data, error, isLoading }] = useAddUserMutation()
+  const [signupErr, setSignupErr] = useState('')
 
   if (data) {
     auth.login(data.user, data.tokens.access)
@@ -41,23 +44,28 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
       confirmPassword: '',
     },
   })
-
   async function onSubmit(user: z.infer<typeof signupFormSchema>) {
     if (user.password !== user.confirmPassword) {
       form.setError('confirmPassword', {
         type: 'manual',
-        message: 'password and confirm password must be the same.',
+        message: 'Password and confirm password must be the same.',
       })
       return
     }
 
     try {
-      await addUser(user)
+      const userData = await addUser(user)
+
+      if (userData.error) {
+        setSignupErr(userData.error.data.email[0])
+      } else {
+        closeModal()
+      }
     } catch (err) {
-      console.log(err)
+      setSignupErr('An error occurred. Please try again.')
     }
-    closeModal()
   }
+
   return (
     <Form {...form}>
       <form
@@ -124,6 +132,7 @@ export default function SignupForm({ closeModal }: { closeModal: () => void }) {
             )}
           />
         </div>
+        {signupErr && <p className="text-red-500">{signupErr}</p>}
         <Button
           type="submit"
           className="w-[70%] bg-green-400 hover:bg-green-600 mt-4"
