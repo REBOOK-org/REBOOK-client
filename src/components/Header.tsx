@@ -33,7 +33,7 @@ export default function Header() {
   }
 
   return (
-    <header className="py-2 border-b fixed top-0 mb-3 left-0 w-full bg-white shadow-md z-50 px-7">
+    <header className="py-1 border-b fixed top-0 mb-3 left-0 w-full bg-white shadow-md z-50 px-7">
       <LoginSignupModal modalOpen={modalOpen} closeModal={closeModal} />
       <div className=" mx-3 flex justify-between items-center ">
         <Link to={'/'}>
@@ -44,7 +44,7 @@ export default function Header() {
         </Link>
         <div className="flex items-center">
           <div
-            className=" content-center font-bold text-center text-[#9C6644] mr-3 text-lg px-4 py-2 rounded-lg cursor-pointer hover:bg-[#9C6644] hover:text-white transition-all duration-300 ease-in-out"
+            className=" content-center font-bold py-1 text-center text-[#9C6644] mr-3 text-md px-4  rounded-xl cursor-pointer hover:bg-gray-100 transition-all duration-300 ease-in-out"
             onClick={() => {
               handelUploadBook()
             }}

@@ -83,7 +83,7 @@ export default function Dropdown({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuSub>
+              {/* <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                   <UserPlus className="mr-2 h-4 w-4" />
                   <span>Invite users</span>
@@ -105,7 +105,7 @@ export default function Dropdown({
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuPortal>
-              </DropdownMenuSub>
+              </DropdownMenuSub> */}
               <DropdownMenuItem>
                 <Plus className="mr-2 h-4 w-4" />
                 <span>New Book</span>
