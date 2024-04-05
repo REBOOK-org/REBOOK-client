@@ -5,7 +5,7 @@ const APIbaseUrl = import.meta.env.VITE_REACT_APP_API_BASE_URL
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: APIbaseUrl,
+    baseUrl: baseUrl,
   }),
   endpoints: (builder) => ({
     addUser: builder.mutation({
@@ -24,6 +24,5 @@ export const userApi = createApi({
     }),
   }),
 })
-
 
 export const { useAddUserMutation, useLoginUserMutation } = userApi

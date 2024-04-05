@@ -6,7 +6,7 @@ const APIbaseUrl = import.meta.env.VITE_REACT_APP_API_BASE_URL
 export const bookApi = createApi({
   reducerPath: 'bookApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: APIbaseUrl,
+    baseUrl: baseUrl,
   }),
   endpoints: (builder) => ({
     addBook: builder.mutation({
