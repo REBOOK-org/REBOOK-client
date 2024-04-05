@@ -1,10 +1,10 @@
-
 import { useParams } from 'react-router-dom'
 import { useGetBookByIdQuery } from '@/app/apiService/bookApi'
 import ImageScrollbar from '@/components/bookDetailsComp/imagesScrollbar'
 import PriceCard from '@/components/bookDetailsComp/bookPriceCard'
 import ContactCard from '@/components/bookDetailsComp/bookContactCard'
-import BookCard from '@/components/bookDetailsComp/bookCard'  
+import BookCard from '@/components/bookDetailsComp/bookCard'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const data = {
   name: 'The Great Gatsby',
@@ -23,12 +23,29 @@ const data = {
   exchangeable: true,
 }
 
-
 export default function BookDetails() {
   const { id } = useParams()
   const { data: book, isLoading, isError } = useGetBookByIdQuery(id)
 
-  if (isLoading) return <div>Loading...</div>
+
+  
+
+  if (isLoading) {
+    return (
+      <div className=" px-6 my-0">
+        <div className="flex  space-x-5">
+          <Skeleton className="h-[250px] w-[250px] rounded-xl" />
+          <div className="space-y-8 pt-4">
+            <Skeleton className="h-4 w-[300px]" />
+            <Skeleton className="h-4 w-[400px]" />
+            <Skeleton className="h-4 w-[400px]" />
+            <Skeleton className="h-4 w-[400px]" /> 
+            <Skeleton className="h-4 w-[300px]" />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className=" px-4 my-0">
