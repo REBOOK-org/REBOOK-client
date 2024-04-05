@@ -3,6 +3,7 @@ import Home from '@/views/Home'
 import Account from '@/views/Account'
 import BookUpload from '@/views/BookUpload'
 import BookDetails from '@/views/BookDetails'
+import UserProfile from '@/views/Profile'
 
 interface Route {
   path: string
@@ -29,6 +30,11 @@ const routes: Route[] = [
   {
     path: '/book/:id',
     component: BookDetails,
+    protected: false,
+  },
+  {
+    path: '/profile',
+    component: UserProfile,
     protected: false,
   },
   {
